@@ -10,6 +10,7 @@ using System.Windows.Forms;
 using System.Configuration;
 using System.Reflection;
 using System.Net;
+using System.Diagnostics;
 
 namespace WebDirScan.Net
 {
@@ -240,6 +241,26 @@ namespace WebDirScan.Net
         {
             FormConfig fc = new FormConfig();
             DialogResult dr = fc.ShowDialog();
+        }
+
+        private void lvResult_SelectedIndexChanged(object sender, EventArgs e)
+        {
+            
+            ListView lv = (ListView)sender;
+            if (lv.SelectedItems.Count < 1)
+            {
+                return;
+            }
+            try
+            {
+                string url = lv.SelectedItems[0].SubItems[1].Text;
+                Clipboard.SetDataObject(url);
+                
+                //Process.Start(url);
+            }
+            catch
+            {
+            }
         }
 
 

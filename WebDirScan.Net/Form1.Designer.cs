@@ -38,11 +38,11 @@
             this.tsProssBar = new System.Windows.Forms.ToolStripProgressBar();
             this.lssLblSpeed = new System.Windows.Forms.ToolStripStatusLabel();
             this.toolStripSplitButton1 = new System.Windows.Forms.ToolStripSplitButton();
+            this.配置ToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.修改字典路径ToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.toolStripStatusLabel1 = new System.Windows.Forms.ToolStripStatusLabel();
             this.tssLblDctPath = new System.Windows.Forms.ToolStripStatusLabel();
             this.tssLblFile = new System.Windows.Forms.ToolStripStatusLabel();
-            this.配置ToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.statusStrip1.SuspendLayout();
             this.SuspendLayout();
             // 
@@ -84,14 +84,17 @@
             // lvResult
             // 
             this.lvResult.Activation = System.Windows.Forms.ItemActivation.OneClick;
-            this.lvResult.HotTracking = true;
-            this.lvResult.HoverSelection = true;
+            this.lvResult.FullRowSelect = true;
+            this.lvResult.GridLines = true;
+            this.lvResult.HeaderStyle = System.Windows.Forms.ColumnHeaderStyle.Nonclickable;
             this.lvResult.Location = new System.Drawing.Point(12, 33);
+            this.lvResult.MultiSelect = false;
             this.lvResult.Name = "lvResult";
             this.lvResult.Size = new System.Drawing.Size(623, 423);
             this.lvResult.TabIndex = 4;
             this.lvResult.UseCompatibleStateImageBehavior = false;
             this.lvResult.View = System.Windows.Forms.View.Details;
+            this.lvResult.SelectedIndexChanged += new System.EventHandler(this.lvResult_SelectedIndexChanged);
             // 
             // statusStrip1
             // 
@@ -130,10 +133,17 @@
             this.toolStripSplitButton1.Size = new System.Drawing.Size(32, 20);
             this.toolStripSplitButton1.Text = "toolStripSplitButton1";
             // 
+            // 配置ToolStripMenuItem
+            // 
+            this.配置ToolStripMenuItem.Name = "配置ToolStripMenuItem";
+            this.配置ToolStripMenuItem.Size = new System.Drawing.Size(148, 22);
+            this.配置ToolStripMenuItem.Text = "配置";
+            this.配置ToolStripMenuItem.Click += new System.EventHandler(this.配置ToolStripMenuItem_Click);
+            // 
             // 修改字典路径ToolStripMenuItem
             // 
             this.修改字典路径ToolStripMenuItem.Name = "修改字典路径ToolStripMenuItem";
-            this.修改字典路径ToolStripMenuItem.Size = new System.Drawing.Size(152, 22);
+            this.修改字典路径ToolStripMenuItem.Size = new System.Drawing.Size(148, 22);
             this.修改字典路径ToolStripMenuItem.Text = "修改字典路径";
             this.修改字典路径ToolStripMenuItem.Click += new System.EventHandler(this.修改字典路径ToolStripMenuItem_Click);
             // 
@@ -153,13 +163,6 @@
             // 
             this.tssLblFile.Name = "tssLblFile";
             this.tssLblFile.Size = new System.Drawing.Size(0, 17);
-            // 
-            // 配置ToolStripMenuItem
-            // 
-            this.配置ToolStripMenuItem.Name = "配置ToolStripMenuItem";
-            this.配置ToolStripMenuItem.Size = new System.Drawing.Size(152, 22);
-            this.配置ToolStripMenuItem.Text = "配置";
-            this.配置ToolStripMenuItem.Click += new System.EventHandler(this.配置ToolStripMenuItem_Click);
             // 
             // Form1
             // 
