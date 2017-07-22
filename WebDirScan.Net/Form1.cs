@@ -16,6 +16,7 @@ namespace WebDirScan.Net
     public partial class Form1 : Form
     {
         private string DictPath;
+        private CConfig config;
         private CWebDirScan webScan;
         private DateTime last;
         private int cnt;
@@ -26,6 +27,7 @@ namespace WebDirScan.Net
 
         private void Form1_Load(object sender, EventArgs e)
         {
+            config = new CConfig();
             try
             {
                 this.DictPath = ConfigurationManager.AppSettings["DictPath"];
@@ -35,11 +37,12 @@ namespace WebDirScan.Net
             }
             catch
             {
-                string confFilePath = Assembly.GetEntryAssembly().Location;
+                /*string confFilePath = Assembly.GetEntryAssembly().Location;
                 Configuration conf = ConfigurationManager.OpenExeConfiguration(confFilePath);
                 AppSettingsSection ass = (AppSettingsSection)conf.GetSection("appSettings");
                 ass.Settings.Add("DictPath", ".\\Dicts\\");
-                conf.Save();
+                conf.Save();*/
+                config.setDictPath(".\\Dicts\\");
                 tssLblDctPath.Text = ".\\Dicts\\";
             }
             lvResult.Columns.Clear();
@@ -70,9 +73,15 @@ namespace WebDirScan.Net
             {
             }
         }
-
+        /// <summary>
+        /// 事件处理委托声明
+        /// </summary>
+        /// <param name="e">事件参数</param>
         private delegate void DelegEventProcess(Object e);
-
+        /// <summary>
+        /// 事件处理函数，需要使用委托
+        /// </summary>
+        /// <param name="e"></param>
         void EventProcess(Object e)
         {
             if (e.GetType() == typeof(WebScanResultEventArgs))
@@ -120,12 +129,6 @@ namespace WebDirScan.Net
                 }
                 
             }
-            else if (e.GetType() == typeof(WebScanProgressEventArgs))
-            {
-                WebScanProgressEventArgs arg = (WebScanProgressEventArgs)e;
-                tsProssBar.Maximum = arg.TotalLines;
-                tsProssBar.Value = arg.CurrentLineNum;
-            }
             else if (e.GetType() == typeof(EventArgs))
             {
                 MessageBox.Show("扫描结束，请检查结果!", "提示", MessageBoxButtons.OK, MessageBoxIcon.Information);
@@ -154,15 +157,7 @@ namespace WebDirScan.Net
         {
             this.Invoke(new DelegEventProcess(this.EventProcess), e);
         }
-        /// <summary>
-        /// 扫描进度
-        /// </summary>
-        /// <param name="sender"></param>
-        /// <param name="e"></param>
-        void webScan_OnProgress(object sender, WebScanProgressEventArgs e)
-        {
-            this.Invoke(new DelegEventProcess(this.EventProcess), e);
-        }
+
 
         
 
@@ -176,14 +171,9 @@ namespace WebDirScan.Net
                 tssLblDctPath.Text = this.DictPath;
                 try
                 {
-                    string confFilePath = Assembly.GetEntryAssembly().Location;
-                    Configuration conf = ConfigurationManager.OpenExeConfiguration(confFilePath);
-                    AppSettingsSection ass = (AppSettingsSection)conf.GetSection("appSettings");
-                    ass.Settings.Remove("DictPath");
-                    ass.Settings.Add("DictPath", this.DictPath);
-                    conf.Save();
+                    config.setDictPath(this.DictPath);
                 }
-                catch
+                catch(Exception err)
                 {
                     MessageBox.Show("保存字典配置失败！", "错误", MessageBoxButtons.OK, MessageBoxIcon.Error);
                 }
@@ -244,6 +234,12 @@ namespace WebDirScan.Net
                 webScan.Stop();
                 btnScan.Enabled = false;
             }
+        }
+
+        private void 配置ToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            FormConfig fc = new FormConfig();
+            DialogResult dr = fc.ShowDialog();
         }
 
 

@@ -56,57 +56,25 @@ namespace WebDirScan.Net
         }
     }
 
-    class WebScanProgressEventArgs : EventArgs
-    {
-        /// <summary>
-        /// 总数
-        /// </summary>
-        private int total;
-        /// <summary>
-        /// 当前数量
-        /// </summary>
-        private int cur;
-
-
-        public int TotalLines
-        {
-            get { return this.total; }
-        }
-
-        public int CurrentLineNum
-        {
-            get { return this.cur; }
-        }
-
-        public WebScanProgressEventArgs(int total, int cur)
-        {
-            this.total = total;
-            this.cur = cur;
-        }
-
-    }
-
+    
     delegate void WebScanResultEventHandler(object sender, WebScanResultEventArgs e);
-    delegate void WebScanProgressEventHandler(object sender, WebScanProgressEventArgs e);
     delegate void WebScanFinishedEventHandler(object sender, EventArgs e);
     class CWebDirScan : Object, IDisposable
     {
+        private CConfig config;
         private string DictPath;
         private List<string> lstDicts;
         private int TotalLines;
         private int CurLine;
         private string url;
         private bool bStop;
+        private int nTasks = 20;
+        private int nHttpTimeout = 1000;
         private AutoResetEvent are;
         /// <summary>
         /// 扫描结果事件
         /// </summary>
         public event WebScanResultEventHandler OnScanResult;
-
-        /// <summary>
-        /// 进度事件
-        /// </summary>
-        public event WebScanProgressEventHandler OnProgress;
 
         /// <summary>
         /// 结束事件
@@ -115,12 +83,14 @@ namespace WebDirScan.Net
 
         public CWebDirScan(string DictPath)
         {
+            config = new CConfig();
             this.init(DictPath);
             lstDicts = new List<string>();
         }
 
         public CWebDirScan()
         {
+            config = new CConfig();
             lstDicts = new List<string>();
         }
         
@@ -148,6 +118,8 @@ namespace WebDirScan.Net
         public async Task Scan(string url, string[] DictFiles)
         {
             this.url = url;
+            this.nTasks = config.getTasks();
+            this.nHttpTimeout = config.getHttpTimeout();
             // 计算总行数
             TotalLines = 0;
             foreach (string filename in DictFiles)
@@ -256,7 +228,7 @@ namespace WebDirScan.Net
                         
                     }
                     are.Set();
-                    if (lstTasks.Count > 40)
+                    if (lstTasks.Count > nTasks)
                     {
                         await Task.WhenAll(lstTasks);
                         lstTasks.Clear();
@@ -310,7 +282,7 @@ namespace WebDirScan.Net
 
             HttpWebRequest req = (HttpWebRequest)HttpWebRequest.Create(u);
             req.Method = WebRequestMethods.Http.Head;
-            req.Timeout = 1000;
+            req.Timeout = nHttpTimeout;
             try
             {
                 WebResponse resp = await req.GetResponseAsync();

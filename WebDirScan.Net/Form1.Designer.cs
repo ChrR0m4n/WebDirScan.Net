@@ -42,6 +42,7 @@
             this.toolStripStatusLabel1 = new System.Windows.Forms.ToolStripStatusLabel();
             this.tssLblDctPath = new System.Windows.Forms.ToolStripStatusLabel();
             this.tssLblFile = new System.Windows.Forms.ToolStripStatusLabel();
+            this.配置ToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.statusStrip1.SuspendLayout();
             this.SuspendLayout();
             // 
@@ -121,6 +122,7 @@
             // 
             this.toolStripSplitButton1.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Image;
             this.toolStripSplitButton1.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
+            this.配置ToolStripMenuItem,
             this.修改字典路径ToolStripMenuItem});
             this.toolStripSplitButton1.Image = ((System.Drawing.Image)(resources.GetObject("toolStripSplitButton1.Image")));
             this.toolStripSplitButton1.ImageTransparentColor = System.Drawing.Color.Magenta;
@@ -131,7 +133,7 @@
             // 修改字典路径ToolStripMenuItem
             // 
             this.修改字典路径ToolStripMenuItem.Name = "修改字典路径ToolStripMenuItem";
-            this.修改字典路径ToolStripMenuItem.Size = new System.Drawing.Size(148, 22);
+            this.修改字典路径ToolStripMenuItem.Size = new System.Drawing.Size(152, 22);
             this.修改字典路径ToolStripMenuItem.Text = "修改字典路径";
             this.修改字典路径ToolStripMenuItem.Click += new System.EventHandler(this.修改字典路径ToolStripMenuItem_Click);
             // 
@@ -151,6 +153,13 @@
             // 
             this.tssLblFile.Name = "tssLblFile";
             this.tssLblFile.Size = new System.Drawing.Size(0, 17);
+            // 
+            // 配置ToolStripMenuItem
+            // 
+            this.配置ToolStripMenuItem.Name = "配置ToolStripMenuItem";
+            this.配置ToolStripMenuItem.Size = new System.Drawing.Size(152, 22);
+            this.配置ToolStripMenuItem.Text = "配置";
+            this.配置ToolStripMenuItem.Click += new System.EventHandler(this.配置ToolStripMenuItem_Click);
             // 
             // Form1
             // 
@@ -190,6 +199,7 @@
         private System.Windows.Forms.ToolStripMenuItem 修改字典路径ToolStripMenuItem;
         private System.Windows.Forms.ToolStripStatusLabel tssLblFile;
         private System.Windows.Forms.ToolStripStatusLabel lssLblSpeed;
+        private System.Windows.Forms.ToolStripMenuItem 配置ToolStripMenuItem;
     }
 }
 
