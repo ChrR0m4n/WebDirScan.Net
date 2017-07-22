@@ -97,7 +97,7 @@ namespace WebDirScan.Net
         private int CurLine;
         private string url;
         private bool bStop;
-        private AutoResetEvent areCur;
+        private AutoResetEvent are;
         /// <summary>
         /// 扫描结果事件
         /// </summary>
@@ -135,7 +135,7 @@ namespace WebDirScan.Net
         public void init(string DictPath)
         {
             bStop = false;
-            areCur = new AutoResetEvent(true);
+            are = new AutoResetEvent(true);
             System.Net.ServicePointManager.DefaultConnectionLimit = 512;
             this.DictPath = DictPath;
             if (!Directory.Exists(this.DictPath))
@@ -203,11 +203,15 @@ namespace WebDirScan.Net
                 while (!sr.EndOfStream)
                 {
                     string line = await sr.ReadLineAsync();
+                    line = line.Replace("\n", "");
+                    line = line.Replace("\r", "");
+
                     line = line.Trim();
                     if (line == "")
                     {
                         continue;
                     }
+                    
                     //line = HttpUtility.UrlEncode(line);
                     string u = this.url;                    
                     if (u.EndsWith("/") && line.StartsWith("/"))
@@ -222,9 +226,34 @@ namespace WebDirScan.Net
                     {
                         u = u + "/" + line;
                     }
+                    are.WaitOne();
                     Task t = Task.Run(() => Head(u));
                     lstTasks.Add(t);
-                    if (lstTasks.Count > 20)
+
+                    if (u.ToLower().EndsWith(".php") ||
+                        u.ToLower().EndsWith(".asp") ||
+                        u.ToLower().EndsWith(".aspx") ||
+                        u.ToLower().EndsWith(".htm") ||
+                        u.ToLower().EndsWith(".html") ||
+                        u.ToLower().EndsWith(".phtml") ||
+                        u.ToLower().EndsWith(".jsp") ||
+                        u.ToLower().EndsWith(".php4") ||
+                        u.ToLower().EndsWith(".php5") ||
+                        u.ToLower().EndsWith(".php6") ||
+                        u.ToLower().EndsWith(".php7"))
+                    {
+                        TotalLines++;
+                        string u1 = u + ".bak";
+                        Task t1 = Task.Run(() => Head(u1));
+                        lstTasks.Add(t1);
+                        TotalLines++;
+                        string u2 = u + ".swp";
+                        Task t2 = Task.Run(() => Head(u2));
+                        lstTasks.Add(t2);
+                        
+                    }
+                    are.Set();
+                    if (lstTasks.Count > 40)
                     {
                         await Task.WhenAll(lstTasks);
                         lstTasks.Clear();
@@ -288,13 +317,14 @@ namespace WebDirScan.Net
             {
                 code = ((HttpWebResponse)ex.Response).StatusCode;
             }
-            areCur.WaitOne();
+            are.WaitOne();
             CurLine += 1;
-            areCur.Set();
+            are.Set();
             if (OnScanResult != null)
             {
                 OnScanResult(this, new WebScanResultEventArgs(url, code, TotalLines, CurLine));
             }
+            
         }
         public void Stop()
         {
