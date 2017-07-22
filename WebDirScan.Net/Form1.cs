@@ -106,11 +106,11 @@ namespace WebDirScan.Net
                 {
                     lock (lvResult)
                     {
-                        lvResult.BeginUpdate();
+                        //lvResult.BeginUpdate();
                         ListViewItem lvi = new ListViewItem(arg.StatusCode.ToString());
                         lvi.SubItems.Add(arg.URL);
                         lvResult.Items.Add(lvi);
-                        lvResult.EndUpdate();
+                        //lvResult.EndUpdate();
                     }
                 }
                 lock (tsProssBar)

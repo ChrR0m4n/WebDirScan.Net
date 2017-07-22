@@ -74,6 +74,7 @@
             // clbDicts
             // 
             this.clbDicts.FormattingEnabled = true;
+            this.clbDicts.HorizontalScrollbar = true;
             this.clbDicts.Location = new System.Drawing.Point(641, 4);
             this.clbDicts.Name = "clbDicts";
             this.clbDicts.Size = new System.Drawing.Size(169, 452);

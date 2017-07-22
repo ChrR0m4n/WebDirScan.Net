@@ -211,7 +211,10 @@ namespace WebDirScan.Net
                     {
                         continue;
                     }
-                    
+                    if (line.IndexOf("#") >= 0)
+                    {
+                        line = line.Replace("#", "%23");
+                    }
                     //line = HttpUtility.UrlEncode(line);
                     string u = this.url;                    
                     if (u.EndsWith("/") && line.StartsWith("/"))
