@@ -273,8 +273,10 @@ namespace WebDirScan.Net
         public async Task Head(string url)
         {
             HttpStatusCode code = HttpStatusCode.OK;
-            HttpWebRequest req = (HttpWebRequest)HttpWebRequest.Create(url);
-            
+
+            Uri u = new Uri(url);
+
+            HttpWebRequest req = (HttpWebRequest)HttpWebRequest.Create(u);
             req.Method = WebRequestMethods.Http.Head;
             req.Timeout = 1000;
             try

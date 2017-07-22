@@ -149,8 +149,7 @@
             // tssLblFile
             // 
             this.tssLblFile.Name = "tssLblFile";
-            this.tssLblFile.Size = new System.Drawing.Size(131, 17);
-            this.tssLblFile.Text = "toolStripStatusLabel2";
+            this.tssLblFile.Size = new System.Drawing.Size(0, 17);
             // 
             // Form1
             // 
